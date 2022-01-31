@@ -5,3 +5,4 @@
 
 ## Database
 * [DB 이론정리](Database/DB_Summary.md)
+* [SQL 문법](Database/SQL_Language.md)
