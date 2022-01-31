@@ -410,6 +410,7 @@ TO_CHAR(date, 'format_model')
 ```
 
 ##### 🔸 날짜 형식 요소
+
 |요소|결과|
 |---|---|
 |YYYY|숫자로 된 전체 연도|
@@ -422,19 +423,13 @@ TO_CHAR(date, 'format_model')
 |DD|숫자 형식의 월간 일|<br>
 
 * 시간 요소는 날짜에서 시간 부분의 형식을 지정한다.<br>
-
-|HH24:MI:SS AM|15:45:32 PM|
-|---|---|<br>
+HH24:MI:SS AM ➡️ 15:45:32 PM
 
 * 문자열은 큰 따옴표로 묶어 추가한다.<br>
-
-|DD "of" MONTH|12 of OCTOBER|
-|---|---|<br>
+DD "of" MONTH ➡️ 12 of OCTOBER
 
 * 숫자 접미어는 숫자를 영어 철자로 표기한다.<br>
-
-|ddspth|fourtheenth|
-|---|---|<br>
+ddspth ➡️ fourtheenth
 * sp라 쓰면 약간 잘라서 약자로 표현함<br><br>
 
 
