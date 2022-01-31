@@ -115,7 +115,7 @@
 * 따라서 전송할 수 있는 데이터의 양에 제한이 없으며 주소창에서 전송되는 파라미터 확인이 불가능하다.
 * `GET` 방식에 비해 보안상 더 유용하다.<br><br>
 
-![getPostRequest](../img/getPostRequest.jpeg)<br><br><br>
+![getPostRequest](../img/getPostRequest.jpg)<br><br><br>
 
 
 ## 3. HTTP 응답(Response) 메시지
