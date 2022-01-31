@@ -35,13 +35,11 @@ $ conn 아이디/비밀번호 as sysdba(권한)
 ```
 SQL> startup
 ```
-<br><br>
 
 ## 6. HR 사용자로 DB Login
 ```
 SQL> conn 아이디/비밀번호
 ```
-<br><br>
 
 ## 7. 사용자 확인
 ```
