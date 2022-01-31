@@ -2,7 +2,7 @@
 # 목차<br>
 * [웹페이지 기초](#웹페이지-기초)<br>
 * [웹 프로그래밍 언어 종류](#웹-프로그래밍-언어-종류)<br>
-* [HTTP 프로토콜](#HTTP-프로토콜)<br>
+* [HTTP 프로토콜(HyperText Transfer Protocol)](#http-프로토콜hyperText-transfer-protocol)<br>
 
 # 웹페이지 기초
 ## 웹페이지에는 정적데이터와 동적데이터가 있다.
