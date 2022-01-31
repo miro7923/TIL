@@ -68,7 +68,7 @@ const name = "james";
 * 연산자의 사용은 동일하지만 자바스크립트에는 `===`과 `!==`이라는 연산자가 있다.
 * `데이터값`과 `자료형`이 **모두 동일**한지 확인하는 연산자이다.
 * `==`, `!=` 연산자들은 단순히 값만 확인하고 자료형이 같은지는 확인하지 않는다.
-    * 그래서 문자 100과 숫자 100을 `==`을 이용해서 값이 같은지 확인하면 `true`를 리턴한다.
+    * 그래서 문자 100과 숫자 100을 `==`을 이용해서 값이 같은지 비교하면 `true`를 리턴한다.
     * `===` 연산자 사용시 `false` 리턴
     
 ## 🔸 연산자 우선순위<br>
@@ -123,8 +123,8 @@ var day = new Date(2022,0,1); // 2022년 1월 1일
 
 ```javascript
 var arr1 = new Array();
-var arr2 = new Array('a', 'b', 'c');
-let arr3 = [1, 2, 3]; // 다 가능
+var arr2 = new Array('a', 'b', 'c'); // 다 가능
+let arr3 = [1, 2, 3]; 
 ```
 
 * `자바스크립트`에서 `배열`은 `배열객체`를 통해 생성 할 수도 있고 컴파일 언어와 비슷하게 `[]를 사용해서 초기화` 하는 형태로 선언할 수도 있다. 
@@ -149,9 +149,9 @@ window.alert("메시지 출력 메서드");
 ```html
 <script type="text/javascript">
 function myOpen()
-	{
-		window.open("test1.html", "test1", "width=300, height=200, top=150, left=500");
-	}
+{
+    window.open("test1.html", "test1", "width=300, height=200, top=150, left=500");
+}
 </script>
 
 <input type="button" value="팝업창 열기" onclick="myOpen();">
@@ -186,7 +186,7 @@ history.go(숫자); // 숫자만큼 앞으로 가기
 
 ```javascript
 <script type="text/javascript">
-	 	alert(navigator.userAgent);
+    alert(navigator.userAgent);
 </script>
 ```
 
@@ -210,9 +210,9 @@ document.폼태그명.속성
 
 ```html
 <fieldset>
-		<legend>회원정보 가입하기</legend>
-		<form action="itwill.jsp" name="fr2" method="get" onsubmit="return fun8();">
-			<label>아이디 : </label><input type="text" name="id" value=""> <br>
+    <legend>회원정보 가입하기</legend>
+    <form action="itwill.jsp" name="fr2" method="get" onsubmit="return fun8();">
+        <label>아이디 : </label><input type="text" name="id" value=""> <br>
 			비밀번호 : <input type="password" name="pw"> <br> 
 			주민번호 : <input type="text" name="ju1" onkeyup="check1();" maxlength="6"> - <input type="text" name="ju2" maxlength="7" onkeyup="check2();">
 			<br> 메세지 :
@@ -223,7 +223,7 @@ document.폼태그명.속성
 			<input type="button" value="속성 확인 버튼" onclick="fun5()"> <input
 				type="button" value="속성 변경 버튼" onclick="fun6()"> <input
 				type="button" value="데이터 확인 버튼" onclick="fun7()">
-		</form>
+    </form>
 </fieldset>
 ```
 
