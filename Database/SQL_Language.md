@@ -2,7 +2,7 @@
 # 목차<br>
 * [DB 구동 및 접속](#DB-구동-및-접속)<br>
 * [SELECT 구문을 사용한 데이터 검색](#SELECT-구문을-사용한-데이터-검색)<br>
-* [WHERE(조건문)절과 ORDER BY(정렬)절](#WHERE(조건문)절과-ORDER-BY(정렬)절)<br>
+* [WHERE(조건문)절과 ORDER BY(정렬)절](#WHERE조건문절과-ORDER-BY정렬절)<br>
 
 # DB 구동 및 접속<br>
 
