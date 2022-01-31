@@ -59,33 +59,33 @@ SQL> alter user 아이디
 * SQL 문법은 기본적으로 대소문자 구분하지 않는다. 
 
 ## 문법
-```
+```sql
 SELECT * | {[DISTINCT] column | expression [alias], ...}
 FROM   table;
 ```
 
 ## 1. 테이블 구조 조회
-```
+```sql
 DESCRIBE employees
 ```
 ![describe](../img/describe.png)<br><br>
 
 ## 2. 테이블로부터 데이터 검색
 ### 1) SELECT 구문
-```
+```sql
 SELECT *
 FROM   department;
 ```
 * '*'은 모든 것을 보여달라고 할 때 사용한다.
 * SQL 구문 또한 세미콜론(;)을 사용해서 문장이 끝났다는 것을 표시하기 때문에 명령어를 실행하려면 마지막에 세미콜론을 꼭 찍어줘야 한다.<br>
 
-```
+```sql
 SELECT department_id, location_id
 FORM   departments;
 ```
 * SELECT 뒤에 컬럼명을 지정하면 해당 컬럼에 해당하는 내용들만 보여달라는 뜻이 된다.<br>
 
-```
+```sql
 SELECT last_name, salary, 12*salary+100
 FROM   employees;
 ```
@@ -93,21 +93,21 @@ FROM   employees;
 
 #### 🔸 입력한 명령어 수정 (마지막으로 쓴 명령어와 비슷한 명령어를 또 써야 할 때 유용하다)
 * SQL에서는 가장 마지막에 입력한 구문 하나만 버퍼에 저장되어서 이것을 수정할 수 있다.
-```
+```sql
 ed
 ```
 * 위 명령어를 입력하고 엔터를 치면 버퍼를 수정할 수 있는 모드에 들어갈 수 있다.
-```
+```sql
 i
 ```
 * 를 누르면 하단에 --INTSERT--가 표시되며 버퍼에 저장된 명령어를 수정할 수 있다.
 * 이 때 구문의 마지막에 세미콜론을 입력하면 **안 된다!!!**
 * 모든 수정이 끝나면 ESC를 눌러 수정을 종료한 뒤
-```
+```sql
 :wq
 ```
 * 위 명령어를 입력하면 버퍼 수정 모드를 빠져나온다.
-```
+```sql
 / + ENTER
 ```
 * '/'를 입력하고 엔터를 누르면 버퍼에 저장된 명령어를 실행하는 동작이다. 모든 수정을 마치고 나와서 '/' + 엔터를 실행해주면 아까 수정했던 명령어가 실행되는 것을 볼 수 있다.<br><br>
@@ -122,19 +122,19 @@ i
 #### 1️⃣ 컬럼명 AS alias
 #### 2️⃣ 컬럼명 alias
 #### 3️⃣ 컬럼명 [AS] "Alias" => 대소문자 구분, 공백 포함, 특수문자 포함을 원하는 경우
-```
+```sql
 SELECT last_name AS name, commission_pct comm
 FORM   employees;
 ```
 ![alias01](../img/alias01.png)<br><br>
-```
+```sql
 SELECT last_name "Name", salary*12 "Annual Salary"
 FROM   employees;
 ```
 ![alias02](../img/alias02.png)<br><br>
 
 ### 4) 연결 연산자 (||)
-```
+```sql
 SELECT last_name || job_id AS "Employees"
 FROM   employees;
 ```
@@ -143,7 +143,7 @@ FROM   employees;
 ### 5) 리터럴 문자
 * 리터럴 문자란 쿼리 구문에 포함된 일반 문자, 숫자, 날짜 값
 * 문자나 날짜 리터럴은 작은 따옴표로 묶어서 작성해야 함
-```
+```sql
 SELECT last_name || ' is a ' || job_id
        AS "Employee Details"
 FROM   employees;
@@ -152,7 +152,7 @@ FROM   employees;
 
 ### 6) DISTINCT 키워드
 * 중복된 값을 자동으로 제거해 주는 키워드
-```
+```sql
 SELECT DISTINCT department_id
 FROM   employees;
 ```
