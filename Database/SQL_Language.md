@@ -4,6 +4,7 @@
 * [SELECT 구문을 사용한 데이터 검색](#SELECT-구문을-사용한-데이터-검색)<br>
 * [WHERE(조건문)절과 ORDER BY(정렬)절](#WHERE조건문절과-ORDER-BY정렬절)<br>
 * [단일 행 함수](#단일-행-함수)<br>
+* [쿼리구문에 큰 따옴표 사용 문법](#쿼리구문에-큰-따옴표-사용-문법)<br>
 
 # DB 구동 및 접속<br>
 
@@ -530,4 +531,17 @@ FROM   employees;
 SELECT last_name, employee_id, COALESCE(TO_CHAR(commission_pct), TO_CHAR(manager_id), 'No commission and no manager')
 FROM   employees;
 ```
+***********************************
 
+# 쿼리구문에 큰 따옴표 사용 문법
+## 쿼리구문에 큰 따옴표(" ")가 사용되는 경우
+* 컬럼명 [AS] "Alias" 
+    * 대소문자 구분
+    * 특수문자 포함
+    * 공백 포함하는 경우
+<br><br>
+* TO_CHAR(sysdate, 'YYYY-MM-DD "Time" HH24:MI')
+    * 사용자 형식 내 문자열 포함 시
+
+## => 긴가민가하면 작은 따옴표를 쓰자
+*********************************
