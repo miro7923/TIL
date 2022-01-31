@@ -9,3 +9,4 @@
 
 ## JSP
 * [웹 페이지 이론 정리](Jsp/JSP_Summary.md)
+* [JavaScript 문법](Jsp/JavaScript.md)
