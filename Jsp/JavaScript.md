@@ -213,16 +213,16 @@ document.폼태그명.속성
     <legend>회원정보 가입하기</legend>
     <form action="itwill.jsp" name="fr2" method="get" onsubmit="return fun8();">
         <label>아이디 : </label><input type="text" name="id" value=""> <br>
-			비밀번호 : <input type="password" name="pw"> <br> 
-			주민번호 : <input type="text" name="ju1" onkeyup="check1();" maxlength="6"> - <input type="text" name="ju2" maxlength="7" onkeyup="check2();">
-			<br> 메세지 :
-			<textarea rows="5" cols="10" name="msg"></textarea>
-			<br> <input type="submit" value="회원 가입하기" onsubmit="return fun8();">
+        비밀번호 : <input type="password" name="pw"> <br> 
+        주민번호 : <input type="text" name="ju1" onkeyup="check1();" maxlength="6"> - <input type="text" name="ju2" maxlength="7" onkeyup="check2();">
+        <br> 메세지 :
+        <textarea rows="5" cols="10" name="msg"></textarea>
+        <br> <input type="submit" value="회원 가입하기" onsubmit="return fun8();">
 
-			<hr>
-			<input type="button" value="속성 확인 버튼" onclick="fun5()"> <input
-				type="button" value="속성 변경 버튼" onclick="fun6()"> <input
-				type="button" value="데이터 확인 버튼" onclick="fun7()">
+        <hr>
+        <input type="button" value="속성 확인 버튼" onclick="fun5()"> 
+        <input type="button" value="속성 변경 버튼" onclick="fun6()"> 
+        <input type="button" value="데이터 확인 버튼" onclick="fun7()">
     </form>
 </fieldset>
 ```
