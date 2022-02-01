@@ -1,6 +1,6 @@
 # CSS
 ## 목차
-* CSS(Cascading Style Sheets)란?(#CSSCascading-Style-Sheets란)
+* CSS(Cascading Style Sheets)란?(#csscascading-style-sheets란)
 * [기본 문법](#기본-문법)
 * [CSS 꾸미기 속성들](#CSS-꾸미기-속성들)
 
