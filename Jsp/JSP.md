@@ -203,20 +203,20 @@ java.lang 패키지 - 1개<br>
 ## 1. request 객체
 * 사용자의 요청에 관한 정보를 얻기 위한 객체<br><br>
 
-* 서버 도메인명 : ```<%=request.getServerName() %>```
-* 서버 포트번호 : <%=request.getServerPort() %>
-* URL : <%=request.getRequestURL() %>
-* URI : <%=request.getRequestURI() %>
-* 클라이언트 호스트명 : <%=request.getRemoteHost() %>
-* 클라이언트 IP주소 : <%=request.getRemoteAddr() %>
-* 프로토콜 : <%=request.getProtocol() %>
-* 페이지 요청(전송)방식 : <%=request.getMethod() %>
-* 프로젝트 경로 : <%=request.getContextPath() %>
-* 물리적 경로 : <%=request.getRealPath("/") %>
-* http헤더 (user-agent): <%=request.getHeader("user-agent") %>
-* http헤더 (accept-language) : <%=request.getHeader("accept-language") %>
-* http헤더 (host) : <%=request.getHeader("host") %>
-* http헤더 (connection) : <%=request.getHeader("connection") %>
+* 서버 도메인명 : ```request.getServerName();```
+* 서버 포트번호 : ```request.getServerPort();```
+* URL : ```request.getRequestURL();```
+* URI : ```request.getRequestURI();```
+* 클라이언트 호스트명 : ```request.getRemoteHost();```
+* 클라이언트 IP주소 : ```request.getRemoteAddr();```
+* 프로토콜 : ```request.getProtocol();```
+* 페이지 요청(전송)방식 : ```request.getMethod();```
+* 프로젝트 경로 : ```request.getContextPath();```
+* 물리적 경로 : ```request.getRealPath("/");```
+* http헤더 (user-agent): ```request.getHeader("user-agent");```
+* http헤더 (accept-language) : ```request.getHeader("accept-language");```
+* http헤더 (host) : ```request.getHeader("host");```
+* http헤더 (connection) : ```request.getHeader("connection");```
 
 * 전송을 통해 다른 페이지에서 전달받은 (이름 등의)정보를 얻을 때
 
@@ -256,28 +256,28 @@ response.addHeader("Refresh", "3;url=http://www.naver.co.kr"); // 3초 후에 �
 response.sendRedirect("http://www.naver.co.kr"); // 해당 페이지로 바로 이동
 ```
 
-* response.setContentType("속성값"); 컨텐츠 타입 지정
-* response.addCookie("쿠키값"); 쿠키 추가
+* ```response.setContentType("속성값"); 컨텐츠 타입 지정```
+* ```response.addCookie("쿠키값"); 쿠키 추가```
 
 ## 3. session 객체
 * 클라이언트의 정보가 유지되어야 할 필요가 있는 경우를 위해 가상 연결을 구현해주는 세션<br><br>
 
-* 세션ID값 : <%=session.getId() %>
-* 세션생성시간 정보(ms) : <%=session.getCreationTime() %>
-* 최종 접속 시간(ms) : <%=session.getLastAccessedTime() %>
-* 세션 유지시간(기본)(1800s,30m) : <%=session.getMaxInactiveInterval() %>
+* 세션ID값 : ```session.getId();```
+* 세션생성시간 정보(ms) : ```session.getCreationTime();```
+* 최종 접속 시간(ms) : ```session.getLastAccessedTime();```
+* 세션 유지시간(기본)(1800s,30m) : ```session.getMaxInactiveInterval();```<br>
 
 ## 4. application 객체
 * 해당 웹 애플리케이션의 실행 환경을 제공하는 서버의 정보와 서버측 자원에 대한 정보를 얻어내거나 해당 애플리케이션의 이벤트 로그를 다루는 메소드들을 제공<br><br>
 
-* 서버정보 : <%=application.getServerInfo() %>
-* 서버의 물리적 경로 : <%=application.getRealPath("/") %>
+* 서버정보 : ```application.getServerInfo();```
+* 서버의 물리적 경로 : ```application.getRealPath("/");```
 
 ## 5. out 객체
 * 서블릿/JSP 컨테이너가 응답 페이지를 만들기 위해 사용하는 출력 스트림 객체
 * 하지만 표현식을 사용해서 자바 코드의 변수 값들과 메소드의 리턴 값들을 출력할 수 있기 때문에 잘 사용되지 않는다.<br><br>
 
-* 출력 : <%=out.print("Hello") %>
-* 버퍼 사이즈 : <%=out.getBufferSize() %>byte<br>
-* 버퍼 사용후 : <%=out.getRemaining() %>byte<br>
+* 출력 : ```out.print("Hello");```
+* 버퍼 사이즈 : ```<%=out.getBufferSize() %>byte<br>```
+* 버퍼 사용후 : ```<%=out.getRemaining() %>byte<br>```
 ******************************
