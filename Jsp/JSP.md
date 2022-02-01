@@ -203,7 +203,7 @@ java.lang 패키지 - 1개<br>
 ## 1. request 객체
 * 사용자의 요청에 관한 정보를 얻기 위한 객체<br><br>
 
-* 서버 도메인명 : <%=request.getServerName() %>
+* 서버 도메인명 : ```<%=request.getServerName() %>```
 * 서버 포트번호 : <%=request.getServerPort() %>
 * URL : <%=request.getRequestURL() %>
 * URI : <%=request.getRequestURI() %>
@@ -223,7 +223,7 @@ java.lang 패키지 - 1개<br>
 ```jsp
 String name = request.getParameter("name");
 ```
-<br><br>
+<br>
 
 * 정보들을 배열로 얻을 때
 
