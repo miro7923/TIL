@@ -1,11 +1,11 @@
 # CSS
 ## 목차
-* CSS(Cascading Style Sheets)란?(#csscascading-style-sheets란)
+* CSS란?(#css란)
 * [기본 문법](#기본-문법)
 * [CSS 꾸미기 속성들](#CSS-꾸미기-속성들)
 
-# CSS(Cascading Style Sheets)란?
-* `HTML`로 만든 웹 문서 뼈대에 디자인을 적용하기 위한 것
+# CSS란?
+* `Cascading Style Sheets`의 약자로 `HTML`로 만든 웹 문서 뼈대에 디자인을 적용하기 위한 것
 
 ## 🔸 적용 방법
 1. 태그에 바로 스타일 적용<br>
