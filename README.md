@@ -8,5 +8,6 @@
 * [SQL 문법](Database/SQL_Language.md)
 
 ## JSP
-* [웹 페이지 이론 정리](Jsp/JSP_Summary.md)
+* [웹 페이지 이론 정리](Jsp/Web_Summary.md)
 * [JavaScript 문법](Jsp/JavaScript.md)
+* [JSP](Jsp/JSP.md)
