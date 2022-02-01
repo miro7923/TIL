@@ -7,6 +7,7 @@
 * [JSP 스크립트 요소](#JSP-스크립트-요소)
 * [내장 객체](#내장-객체)
 * [액션 태그](#액션-태그)
+* [영역 객체(Scope)와 속성(Attribute)](#영역-객체Scope와-속성Attribute)
 
 # JSP(Java Server Page)란?
 * `Java`를 이용하여 `동적인 웹 페이지`를 만들기 위해 Sun Microsystems사가 개발한 기술
@@ -324,3 +325,9 @@ response.sendRedirect("http://www.naver.co.kr"); // 해당 페이지로 바로 �
 
 * `forward`와 `include` 태그를 사용하여 이동할 페이지에 추가적으로 넘겨줄 파라미터가 있으면 `<jsp:param/>` 태그를 사용할 수 있다.
 ***********************
+
+# 영역 객체(Scope)와 속성(Attribute)
+* jsp 내장객체 중에서 특정 공간(Scope)에 정보를 저장하고, 저장된 정보(Attribute)를 공유할 수 있는 객체
+* `JSP`에서는 `page`, `request`, `session`, `application` 4가지 영역으로 정의한다.<br><br>
+![jspScope](../img/jspScope.png)<br><br>
+************************
