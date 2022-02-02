@@ -1,7 +1,8 @@
 # 👀 YUJIN'S TIL(Today I Learned)<br>
 
 ## 컴퓨터 사이언스<br>
-* [컴퓨터 사이언스 정리](ComputerSicence/ComputerSience_Summary.md)<br><br>
+* [컴퓨터 사이언스 정리](ComputerScience/ComputerScience_Summary.md)
+* [운영체제](ComputerScience/OS_Summary.md)
 
 ## Database
 * [DB 이론 정리](Database/DB_Summary.md)
