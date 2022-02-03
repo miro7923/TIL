@@ -12,6 +12,7 @@
 * [웹 페이지 이론 정리](Jsp/Web_Summary.md)
 * [JavaScript 문법](Jsp/JavaScript.md)
 * [JSP](Jsp/JSP.md)
+* [MySql](Jsp/Mysql.md)
 
 ## Web
 * [HTML](Web/HTML.md)
