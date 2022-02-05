@@ -265,7 +265,7 @@
 
 ## 저장장치 계층 구조<br>
 
-![storageHierarchy](../img/storageHierarchy.png){: width="300" height="350"}<br><br>
+<img src="../img/storageHierarchy.png" width="300" height="350"><br><br>
 
 * 위로 갈수록 `Speed` ⬆️  `Cost` ⬆️(단위공간당 용량이 적어진다)  `Volatility` ⭕️ (`휘발성` - 전원을 끄면 데이터가 사라진다)
     * `CPU`에서 직접 접근 가능(`byte` 단위 접근 가능)
