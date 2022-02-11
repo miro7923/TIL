@@ -10,6 +10,9 @@
 * [영역 객체(Scope)와 속성(Attribute)](#영역-객체Scope와-속성Attribute)
 * [세션(Session)](#세션Session)
 * [쿠키(Cookie)](#쿠키Cookie)
+* [JDBC(Java Database Connectivity)](#jdbcjava-database-connectivity)
+* [회원관리 서비스 요구사항](#회원관리-서비스-요구사항)
+* [자바빈(JavaBean)](#자바빈javabean)
 
 # JSP(Java Server Page)란?
 * `Java`를 이용하여 `동적인 웹 페이지`를 만들기 위해 Sun Microsystems사가 개발한 기술
@@ -414,3 +417,657 @@ response.sendRedirect("http://www.naver.co.kr"); // 해당 페이지로 바로 �
 
 * 그 다음 클라이언트 측에서 쿠키를 가져온다.
 * 쿠키값을 가져올 때엔 꼭 예외처리를 해서 `null`값이 아닐 때에만 가져오는 동작을 수행하도록 해야한다.
+**************************************************
+
+# JDBC(Java Database Connectivity)
+* `Java`랑 `DBMS`를 연결시켜주는 `API`
+* 즉 자바랑 DB를 연결시켜서 사용할 수 있게 해주는 기능들이 모여있는 라이브러리라 할 수 있다.
+* 데이터베이스에 데이터를 삽입, 수정, 삭제할 때 `SQL` 프롬프트에서 `SQL`문을 사용하지 않아도 자바 프로그램에서 `SQL`문을 사용하여 데이터베이스에 데이터를 추가하고 삭제하는 작업을 할 수 있게 하는 `API`이다.
+* `JDBC`는 `DBMS` 종류에 상관없이 독립적으로 사용 가능하다.
+    * 여러 언어에서 작동하는 방법이 전반적으로 같다고 할 수 있다.
+<br><br>
+
+    
+## JDBC 드라이버 설치
+* `mysql` 홈페이지에서 `Connect J`를 다운받는다.(현재 최신버전인 8.0.28)
+* 윈도우라면 `.zip` 파일을 받으면 되고 맥이라면 `.tar` 파일을 받는다.
+* 압축을 풀면 `mysql-connector-java-8.0.28.jar`란 파일이 있다.
+* 저걸 `JDBC`를 사용하고자 하는 (이클립스)프로젝트의 `WEB-INF/lib` 폴더에 넣는다.(경로 다르면 안 됨!! 무조건 저기에 넣어야 함)
+* 그러면 설치 끝!
+<br><br>
+
+
+## JDBC 연동
+### 1. 드라이버 로드(하드디스크에 있는 프로그램을 메모리로 불러오기)
+* 아까 설치한 `JDBC` 드라이버를 불러올 것이다. 
+```jsp
+Class.forName("com.mysql.cj.jdbc.Driver"); // static method라서 객체 생성 없이 바로 호출할 수 있음
+```
+<br><br>
+* 이렇게 입력하면 드라이버를 로드할 수 있다. 
+* MySQL 홈페이지 가서 Documentation 페이지 - Connector/J 8.0 Developer Guide - 6. ConnectJ reference - 6.1 Driver/Datasource Class Name 가면 드라이버를 로드할 때 무슨 클래스명을 입력해야 하는지 찾을 수 있다. 
+    * 그 외에도 레퍼런스가 필요하면 참고하자.
+* 만약 설치를 안 했다면 실행시 참고할 드라이버가 없어서 `HTTP500` 에러가 뜬다.<br><br>
+
+### 2. DB 연결
+* `DriverManager.getConnection("디비주소", "디비아이디", "디비비밀번호");` 
+* `DriverManager` 객체를 이용해 `DB`와 드라이버를 연결한다.
+
+```jsp
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "1234");
+```
+<br><br>
+* 이런 식으로 `DB`의 주소와 아이디, 비밀번호를 입력한 뒤 연결 객체 정보를 `Connection`에 저장한다.
+* 이러면 `mysql`과 연결된 것이다. 이제 `jsp` 파일에서 `SQL`문을 작성해 데이터베이스를 관리할 수 있다.
+
+## JDBC 사용 예제 1) 사용자가 홈페이지에 회원가입 하는 상황 
+
+### 1. `insertForm.jsp`라는 이름으로 간단한 회원가입 페이지를 만든다.
+```html
+<form action="insertPro.jsp" method="post">
+    아이디 : <input type="text" name="id"><br>
+    비밀번호 : <input type="password" name="pass"><br>
+    이름 : <input type="text" name="name"><br>
+    <input type="submit" value="전송하기">
+  </form>
+```
+<br><br>
+* 여기서 사용자가 정보를 입력하고 `submit`버튼을 클릭하면 `insertPro.jsp` 페이지로 전달된다.<br><br>
+
+### 2. `insertPro.jsp`라는 이름으로 회원가입 정보를 받아서 `DB`에 사용자 정보를 추가하는 페이지를 만든다.
+```jsp
+  <% // 스크립틀릿 사용
+    // 0단계 : 드라이버 설치 - 완료됐으니 로드 단계로 넘어간다.
+    // 1단계 : 드라이버 로드
+    Class.forName("com.mysql.cj.jdbc.Driver");
+  
+    System.out.println("드라이버 로드 성공!");
+    
+    // 2단계 : 디비 연결 (디비 바꾸려면 jdbc:mysql://localhost:3306/뒤에 디비 이름만 바꿔주면 됨)
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "1234");
+    
+    System.out.println("디비 연결 성공!");
+    System.out.println("연결정보 : " + con);
+    
+    // 3단계 : SQL 구문 생성 & stmt(statement) 객체 생성
+    // String sql = "insert into itwill_member (id, pass, name) values('id', 'pw', 'name')";
+    
+    // secure 코딩 예시) values에 담을 데이터의 개수만큼 ?를 넣는다.
+    String sql = "insert into itwill_member (id, pass, name) values(?, ?, ?)";
+    
+    // stmt 객체 만들기 : sql 구문을 실행하는 객체 	   
+    // Statement stmt = con.createStatement(); // 하지만 이렇게 쓰려면 valuse 괄호 안에 따옴표를 넘 많이 써야해서 안 쓸 예정
+    										   // 그리고 따옴표 안에 정보를 노출해서 써야해서 보안적으로 좋지 않다.
+    // Statement랑 PreparedStatement 객체 둘 중 하나만 쓸 수 있음
+    
+    // pstmt 객체 : sql 구문을 실행하는 객체
+    PreparedStatement pstmt = con.prepareStatement(sql); // 객체를 만들 때 쿼리 정보를 가져가서 사전준비함
+    
+    // ??? 값 sql 구문에 채워넣기
+    // pstmt.setXXXXXX(물음표의 위치, 실제 들어갈 값);
+    // => XXXXX : 컬럼의 데이터타입(int, double, string, ...)에 따라 변경
+    // * ? 개수와 동일한 구문을 수행해야 함 - ?가 3개면 채우는 구문 3개 있어야 함
+    // null 넣고 싶으면 쿼리문(String sql) 안에 직접 넣으면 됨
+    pstmt.setString(1, id); // 뜻 : 1번 물음표에 id에 해당하는 값을 넣는다.
+    pstmt.setString(2, pass);
+    pstmt.setString(3, name);
+    
+    // 4단계 : SQL 구문 실행
+    // stmt.executeUpdate(sql); // 얘는 미리 준비 안해서 파라미터로 넣어줌
+    pstmt.executeUpdate(); // 그리고 바로 실행
+    
+    System.out.println("insert 동작 완료!");
+  %>
+```
+<br><br>
+* 위 과정을 완료하면 터미널이나 워크벤치에서 직접 `SQL`문을 작성하지 않았는데도 `DB`에 데이터가 삽입된다!<br><br>
+
+### ❗️ 페이지를 실행할 땐 `~Form.jsp` 페이지에서 한다. 
+* 사용자가 보는 페이지는 `Form` 페이지이지 처리를 하는 `Pro` 페이지를 사용자가 볼 수 없고 그럴 필요도 없기 때문이다.
+* `Pro` 페이지는 개발과정에서 개발자만 보는 페이지이다.
+
+
+## JDBC 사용 예제 2) 회원 정보를 수정하는 상황
+### 1. `updateForm.jsp`라는 이름으로 수정할 정보를 입력받을 간단한 페이지를 하나 만든다.
+```html
+  <form action="updatePro.jsp" method="post">
+    아이디 : <input type="text" name="id"><br>
+    비밀번호 : <input type="password" name="pass"><br>
+    수정할 이름 : <input type="text" name="update_name"><br>
+    <input type="submit" value="전송하기">
+  </form>
+```
+<br><br>
+
+### 2. `updatePro.jsp`라는 이름으로 전송받은 정보를 `DB`에 삽입할 페이지를 만든다.
+```jsp
+  <%
+    // 그냥 받으면 한글이 깨지기 때문에 꼭 한글처리 후 데이터 받기를 시작한다.
+    request.setCharacterEncoding("UTF-8");
+    
+    // 전달된 파라미터 저장
+    String id = request.getParameter("id");
+    String pass = request.getParameter("pass");
+    String uName = request.getParameter("update_name");
+  %>
+  
+  아이디 : <%=id %><br>
+  비밀번호 : <%=pass %><br>
+  수정할 이름 : <%=uName %><br>
+  <hr>
+  
+  <%
+    final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    final String DBURL = "jdbc:mysql://localhost:3306/jspdb";
+    final String DBID = "root";
+    final String DBPASS = "1234";
+  %>
+  
+  <h2> 1. 드라이버 로드 </h2>
+  <%
+    Class.forName(DRIVER); // Class는 java.lang 패키지에 들어서 임포트 없이 쓸 수 있음.
+    
+    System.out.println("드라이버 로드 성공!");
+  %>
+  
+  <h2> 2. 디비 연결 </h2>
+  <%
+    Connection con = DriverManager.getConnection(DBURL, DBID, DBPASS);
+    
+    System.out.println("디비연결 성공!");
+  %>
+  
+  <h2> 3. sql 작성 & pstmt 생성 </h2>
+  <%
+    String sql = "update itwill_member set name=? where id=? and pass=?"; // ?는 mysql 문법이 아니고 jsp 코드에서만 쓸 수 있는 문법
+    
+    PreparedStatement pstmt = con.prepareStatement(sql); // 인터페이스를 통해 객체를 생성하지 않고 만들어진 정보를 전달
+    
+    // ? 채우기
+    pstmt.setString(1, uName);
+    pstmt.setString(2, id);
+    pstmt.setString(3, pass);
+  %>
+  
+  <h2> 4. sql 실행 </h2>
+  <%
+    pstmt.executeUpdate();
+    System.out.println("회원정보 수정 완료!");
+  %>
+```
+<br><br>
+
+
+## JDBC 사용 예제 3) 사용자 정보를 삭제하는 상황
+### 1. `deleteForm.jsp`라는 이름으로 삭제할 사용자의 정보를 입력받는 페이지를 만든다.
+```jsp
+  <form action="deletePro.jsp" method="post">
+    아이디 : <input type="text" name="id"><br>
+    비밀번호 : <input type="password" name="pass"><br>
+    <input type="submit" value="전송하기">
+  </form>
+```
+<br><br>
+
+### 2. `deletePro.jsp`라는 이름으로 `DB`에서 전달받은 정보를 삭제하는 작업을 하는 페이지를 만든다.
+```jsp
+  <%
+    request.setCharacterEncoding("UTF-8");
+  
+    String id = request.getParameter("id");
+    String pass = request.getParameter("pass");
+  %>
+  
+  <%
+    final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    final String DBURL = "jdbc:mysql://localhost:3306/jspdb";
+    final String DBID = "root";
+    final String DBPASS = "1234";
+  %>
+  
+  <h2> 1. 드라이버 로드 </h2>
+  <%
+    Class.forName(DRIVER);
+  %>
+  
+  <h2> 2. 디비 연결 </h2>
+  <%
+    Connection con = DriverManager.getConnection(DBURL, DBID, DBPASS);
+  %>
+  
+  <h2> 3. sql 작성 & pstmt 생성 </h2>
+  <%
+    String sql = "delete from itwill_member where id=? and pass=?";
+    
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    pstmt.setString(1, id);
+    pstmt.setString(2, pass);
+  %>
+  
+  <h2> 4. sql 실행 </h2>
+  <%
+    pstmt.executeUpdate();
+  
+    System.out.println("회원정보 삭제 완료!");
+  %>
+```
+**********************************************
+
+# 회원관리 서비스 요구사항
+* 모든 웹페이지의 기본 서비스라고 할 수 있는 회원관리 서비스! 아래와 같은 사항들이 가능해야 한다.<br><br>
+
+1) 회원가입 페이지 - 아이디는 이메일을 사용하거나 전화번호를 입력받는 등 회원가입에 필요한 정보 입력
+2) 로그인
+3) 메인페이지
+4) 회원정보 조회
+5) 회원정보 수정
+6) 회원정보 삭제
+7) 관리자 - 회원 전체 목록 조회<br><br>
+
+* 이렇게 작성하는 것을 `요구사항 확인` 혹은 `요구사항 명세`라고 한다. 
+* 이 과정을 진행하기 전에 `DB` 테이블 생성을 먼저 진행한다.
+*******************************************
+
+# 자바빈(JavaBean)
+* 관련있는 데이터를 하나의 클래스에 설계해서 한 번에 관리하는 것
+* 디자인과 비즈니스 로직을 분리하기 위해 사용한다.
+    * 자바 코드로만 입력하면 프로그래밍 언어를 모르는 디자이너가 알아보기 어렵고 그렇다고 프로그래머가 자바 코드를 안 쓸 수는 없는 일이니 중간 지점을 찾기 위해 사용한다고 보면 될 거 같다.<br><br>
+    
+## 자바빈 설계 규약
+1) 기본패키지(default)를 제외한 특정 패키지 안에 있어야 함
+2) 기본 생성자가 있어야 함
+3) 멤버 변수는 접근지정자 `private` 선언
+4) 멤버 변수에 접근하기 위해서 `get`, `set` 메서드 선언(`public`)<br><br>
+
+## 자바빈을 사용한 DB 관리 예제 1) 회원가입 하는 상황
+### 1. 사용자 정보를 저장할 클래스를 만든다.
+```java
+package com.itwillbs.member;
+
+import java.sql.Timestamp;
+
+// Object 클래스는 자바의 최상위 클래스 => 자바에서 사용하는 모든 클래스는 Object 클래스를 상속받는다.
+// 명시된 상속관계가 없을 경우 자동으로 Object 클래스를 상속한다.(생략가능)
+
+public class MemberBean {
+	
+	// member 테이블정보를 한 번에 저장하는 객체
+	// MemberDTO / MemberVO 다 Bean이랑 같은거라고 보면 된다.
+	
+	private String id;
+	private String pass;
+	private String name;
+	private int age;
+	private String gender;
+	private String email;
+	private Timestamp regdate;
+	
+	// 하나하나 타이핑하지 말고 generate getter/setter를 사용해 get/set 메서드를 세팅한다.
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Timestamp getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(Timestamp regdate) {
+		this.regdate = regdate;
+	}
+	
+	// alt + shift + s + s를 누르면 오버라이딩 할 수 있는 메서드 목록을 불러올 수 있다.
+    // String 클래스에 있는 toString()이 오버라이딩 되는 이유는 자바의 모든 클래스는 Object 클래스를 상속받는데 
+    // Object 클래스로 가보면 toString() 메서드의 원형이 작성되어 있다.(원형은 객체가 생성된 메모리의 주소를 리턴)
+    // 자바의 모든 클래스는 Object 클래스를 상속받기 때문에 String 클래스에서도 toString()을 오버라이딩해서 우리가 자주 쓰는 동작을 보여주는 것이고
+    // 사용자 정의로 만든 이 클래스 또한 Object를 상속받기 때문에 toString() 메서드의 오버라이딩이 가능한 것이다.  
+	@Override // memberBean 정보를 모두 한 번에 확인하기 위해서 사용(하나하나 get 메서드로 부르려면 복잡하니깐..)
+	public String toString() {
+		return "MemberBean [id=" + id + ", pass=" + pass + ", name=" + name + ", age=" + age + ", gender=" + gender
+				+ ", email=" + email + ", regdate=" + regdate + "]";
+	}
+
+}
+```
+<br><br>
+
+### 2. `insertForm.jsp`라는 이름으로 가입정보를 입력받는 페이지를 만든다.
+```jsp
+  <!-- name은 컬럼명과 일치시켜 주는 것이 좋다 -->
+  <fieldset>
+    <form action="insertPro.jsp" method="post">
+	  아이디 : <input type="text" name="id"><br>
+	  비밀번호 : <input type="password" name="pass"><br>
+	  이름 : <input type="text" name="name"><br>
+	  나이 : <input type="number" name="age"><br><!-- number: 옆에 숫자 증감시키는 화살표 생김 -->
+	  성별 : <input type="radio" name="gender" value="남자">남
+	  		<input type="radio" name="gender" value="여자">여<br>
+	  이메일 : <input type="email" name="email"><br><!-- email: 이메일 형식이 맞는지 확인해줌 -->
+	  
+	  <input type="submit" value="회원가입하기">
+    </form>
+  </fieldset>
+```
+<br><br>
+
+### 3. `insertPro.jsp`라는 이름으로 전달받은 정보를 `DB`에 삽입하는 페이지를 만든다.
+```jsp
+  <%
+    request.setCharacterEncoding("UTF-8");
+  
+    String id = request.getParameter("id");
+    String pass = request.getParameter("pass");
+    String name = request.getParameter("name");
+	int age = Integer.parseInt(request.getParameter("age"));
+    String gender = request.getParameter("gender");
+    String email = request.getParameter("email");
+  %>
+  
+  <hr>
+    <h2>전달받은 회원정보</h2>
+	  아이디 : <%=id %><br>
+	  비밀번호 : <%=pass %><br>
+	  이름 : <%=name %><br>
+	  나이 : <%=age %><br>
+	  성별 : <%=gender %><br>
+	  이메일 : <%=email %><br>
+	  
+	  <%
+//	    MemberBean mb = new MemberBean();
+//	    System.out.println(mb);
+//	    System.out.println(mb.toString()); // 둘은 같은 코드
+                                           // MemberBean 클래스에서 toString()을 오버라이딩하지 않았으면 객체가 할당된 메모리 주소를 출력한다.
+	  %>
+  <hr>
+  
+  <h2>액션태그를 사용한 자바빈 객체 사용</h2>
+  <jsp:useBean id="mb" class="com.itwillbs.member.MemberBean" />
+  <jsp:setProperty property="*" name="mb"/>
+  
+  <%=mb %>
+  
+  <%
+    // 회원가입하는 날짜정보를 저장
+    // 내 컴퓨터에 있는 최근 시간정보를 가져다가 Timestamp 객체 초기화 & 호출
+    mb.setRegdate(new Timestamp(System.currentTimeMillis()));
+  %>
+  
+  <%=mb %>
+  <!-- 여기까지 데이터를 전달하는 동작 -->
+  
+  <hr>
+  <h2>전달된 정보(mb)를 DB에 저장</h2>
+  <%
+    // 1. 드라이버 로드
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    System.out.println("드라이버 로드 성공!");
+    
+    // 2. 디비 연결
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "1234");
+    System.out.println("디비 연결 성공 : " + con);
+    
+    // 3. sql 작성 & pstmt 객체 생성
+    String sql = "insert into itwill_member(id, pass, name, age, gender, email, regdate) values(?, ?, ?, ?, ?, ?, ?)";
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    
+    // ??? 
+    pstmt.setString(1, mb.getId());
+    pstmt.setString(2, mb.getPass());
+    pstmt.setString(3, mb.getName());
+    pstmt.setInt(4, mb.getAge());
+    pstmt.setString(5, mb.getGender());
+    pstmt.setString(6, mb.getEmail());
+    pstmt.setTimestamp(7, mb.getRegdate());
+    
+    // 4. sql 실행
+    pstmt.executeUpdate();
+    System.out.println("회원 가입 완료!");
+  %>
+  
+  <script type="text/javascript">
+    alert('정상적으로 회원가입 완료!');
+    location.herf = 'loginForm.jsp';
+  </script>
+```
+<br><br>
+
+## 자바빈을 사용한 DB 관리 예제 2) 로그인하는 상황
+### 1. 정보를 저장할 클래스는 아까 만들었으니까 생략
+
+### 2. `loginForm.jsp`라는 이름으로 로그인용 페이지를 만든다.
+```html
+  <form action="loginPro.jsp" method="post">
+    아이디 : <input type="text" name="id"><br>
+    비밀번호 : <input type="password" name="pass"><br>
+    <input type="submit" value="로그인">
+    <input type="button" value="회원가입" onclick=" location.href='insertForm.jsp'; ">
+  </form>
+```
+<br><br>
+
+### 3. `loginPro.jsp`라는 이름으로 전달받은 정보를 `DB`와 매칭하는 페이지를 만든다.
+```jsp
+  <%
+    // 한글처리
+    request.setCharacterEncoding("UTF-8");
+    
+    // 전달받은 정보를 액션태그를 사용하여 저장
+  %>
+  
+  <jsp:useBean id="mb" class="com.itwillbs.member.MemberBean"/>
+  <jsp:setProperty property="*" name="mb"/>
+  
+  <%=mb %>
+  
+  <hr>
+  
+  <%
+    // 1. 드라이버 로드
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    System.out.println("드라이버 로드 성공!");
+    
+    // 2. 디비 연결
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "1234");
+    System.out.println("디비 연결 성공 : " + con);
+    
+    // 3. sql 작성() & pstmt 생성
+    // String sql = "select * from itwill_member where id=? and pass=?"; -> sql 인젝션이라 하는데 안 쓸 것임
+    
+    // 이 테이블에서 pass를 가져오는데 where의 조건에 해당하는 id만 가져온다.
+    String sql = "select pass from itwill_member where id=?";
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    
+    // ?
+    pstmt.setString(1, mb.getId());
+    
+    // 4. sql 실행
+    ResultSet rs = pstmt.executeQuery();
+    
+    // 5. 데이터 처리
+    if (rs.next())
+    {
+    	// 데이터 있음 -> DB저장 O -> 회원
+    	// 비밀번호 체크
+    	if (mb.getPass().equals(rs.getString("pass")))
+    	{
+    		// 회원이면서 비밀번호도 동일 -> 본인 로그인 성공
+    		// 로그인 정보를 같이 가지고 이동
+    		session.setAttribute("id", mb.getId());
+    		
+    		// 메인페이지 이동
+    		response.sendRedirect("main.jsp");
+    	}
+    	else 
+    	{
+    		// 회원이긴 하나 비밀번호 틀림
+    		%> <!-- 여기까지 아이디-비밀번호 확인 및 처리 과정 -->
+    		  <!-- html 코드 -->
+    		  <script type="text/javascript">
+    		    alert("아이디 혹은 비밀번호 오류!"); /* 아이디나 비밀번호 하나만 오류라고 알려주는 것이 보안적으로 취약해서 둘 다 오류라고 알려줌 */
+    		    history.back();
+    		  </script>
+    		<%
+    	}
+    }
+    else 
+    {
+    	// 데이터 없음 -> DB저장 X -> 비회원
+		%> <!-- 여기까지 아이디-비밀번호 확인 및 처리 과정 -->
+		  <!-- html 코드 -->
+		  <script type="text/javascript">
+		    // alert("아이디 혹은 비밀번호 오류!"); /* 아이디나 비밀번호 하나만 오류라고 알려주는 것이 보안적으로 취약해서 둘 다 오류라고 알려줌 */
+		    confirm("회원정보가 없습니다. 가입하시겠습니까?"); /* yes 누르면 가입페이지로 이동/ no 누르면 다시 뒤로 이동 */
+		    history.back();
+		  </script>
+		<%
+    }
+  %>
+```
+<br><br>
+
+## 로그인 후 메인 페이지로 이동하는 예제
+* `main.jsp`라는 이름으로 페이지를 만든다.
+
+```jsp
+  <!-- 항상 로그인된 회원만 사용가능하게 만들기 -->
+  <%
+    // 로그인 정보가 없을 경우 다시 로그인 페이지로 이동
+    // 로그인 정보 가져오기(세션값)
+    String id = (String)session.getAttribute("id"); // 다운캐스팅 - session.setAttribute(String name, Object value) 함수 원형에서
+    												// Object 객체에 String 객체를 업캐스팅해서 씀 => 그래서 다운캐스팅 가능
+    if (id == null)
+    {
+    	response.sendRedirect("loginForm.jsp"); // alert 창 띄우기는 불가능 - jsp 코드가 먼저 실행된 다음에 javascript 코드가 실행되기 때문에
+    											// 이 시점에 javascript는 로드되지도 않았음 - 그래서 javascript 코드는 못 쓴다.
+    }
+  %>
+  
+  <h2><%=id %>님 환영합니다.</h2>
+  <hr>
+  
+  <input type="button" value="로그아웃" onclick="location.href='logout.jsp';">
+  
+  <hr><hr>
+  
+  <h3><a href="info.jsp"> 회원정보 보기 </a></h3>
+```
+<br><br>
+
+## 로그인 후 회원정보를 볼 수 있는 페이지로 이동하는 예제
+* `info.jsp`라는 이름으로 페이지를 만든다.
+
+```jsp
+  <h2>로그인한 회원 정보를 모두 출력하는 페이지</h2>
+  <%
+    // 로그인정보(세션값)
+    String id = (String) session.getAttribute("id");
+    if (id == null)
+    {
+    	response.sendRedirect("loginForm.jsp");
+    }
+    
+    // DB에서 필요한 정보를 가져오기
+    final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    final String URL = "jdbc:mysql://localhost:3306/jspdb";
+    final String ID = "root";
+    final String PASS = "1234"; // 실제 코드 작성시엔 이렇게 계정정보 노출하면 안됨. 이런 코드는 지우는 것이 좋다.
+    
+	MemberBean mb = null; // 전역변수로 쓸 수 있도록 처음엔 MemberBean 객체의 레퍼런스만 준비함
+						  // 미리 객체를 만들지 않고 필요할 때 생성하도록 한다. (메모리 낭비를 줄이기 위해)
+    
+    // 1. 드라이버 로드
+    Class.forName(DRIVER);
+    
+    // 2. 디비 연결
+    Connection con = DriverManager.getConnection(URL, ID, PASS);
+    
+    // 3. sql 작성(select) & pstmt 객체 생성
+    String sql = "select * from itwill_member where id=?";
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    
+    // ?
+    pstmt.setString(1, id);
+    
+    // 4. sql 실행
+    ResultSet rs = pstmt.executeQuery();
+    
+    // 5. 데이터 처리
+    // DB에 있는 정보를 -> 화면(jsp)에 출력
+    if (rs.next())
+    {
+    	// 무조건 저장이 아니라 정보가 있을 때만 저장
+    	// 한 명의 회원정보를 저장하는 객체 생성
+    	mb = new MemberBean();
+    	
+    	mb.setId(rs.getString("id"));
+    	mb.setPass(rs.getString("pass"));
+    	mb.setName(rs.getString("name"));
+    	mb.setAge(rs.getInt("age"));
+    	mb.setGender(rs.getString("gender"));
+    	mb.setEmail(rs.getString("email"));
+    	mb.setRegdate(rs.getTimestamp("regdate"));
+    }
+    
+    System.out.println("회원정보 가져오기 성공!");
+  %>
+  
+  <hr>
+  
+  <%-- 아이디 : <%=mb.getId() %><br> => if문 안에서 객체를 만들시(지역변수) 사용 불가 --%> 
+  아이디 : <%=mb.getId() %><br> 
+  비밀번호 : <%=mb.getPass() %><br>
+  이름 : <%=mb.getName() %><br>
+  나이 : <%=mb.getAge() %><br>
+  성별 : <%=mb.getGender() %><br>
+  이메일 : <%=mb.getEmail() %><br>
+  회원가입일 : <%=mb.getRegdate() %><br>
+  
+  <h3><a href="main.jsp">메인페이지로...</a></h3> <!-- 메인 페이지랑 왔다갔다하기  -->
+```
+
+## 로그아웃하는 동작 예제
+* `logout.jsp`라는 이름으로 페이지를 만든다.
+```jsp, javascript
+  <%
+    // 로그아웃 - session 초기화
+    session.invalidate();
+  %>
+  
+  <script type="text/javascript">
+    alert('로그아웃!');
+    location.href = 'main.jsp'; 
+    /* 메인페이지로 넘어갔을 때 로그인 세션 정보가 없으면 로그인 페이지로 이동되게 해 놨음 
+       그래서 난 메인페이지로 이동시켰지만 세션 정보가 초기화 되었기 때문에 로그인 페이지로 이동하게 된다. */
+  </script>
+```
+***************************************
