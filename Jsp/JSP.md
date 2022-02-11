@@ -497,7 +497,7 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     
     // stmt 객체 만들기 : sql 구문을 실행하는 객체 	   
     // Statement stmt = con.createStatement(); // 하지만 이렇게 쓰려면 valuse 괄호 안에 따옴표를 넘 많이 써야해서 안 쓸 예정
-    										   // 그리고 따옴표 안에 정보를 노출해서 써야해서 보안적으로 좋지 않다.
+                            // 그리고 따옴표 안에 정보를 노출해서 써야해서 보안적으로 좋지 않다.
     // Statement랑 PreparedStatement 객체 둘 중 하나만 쓸 수 있음
     
     // pstmt 객체 : sql 구문을 실행하는 객체
@@ -956,11 +956,11 @@ public class MemberBean {
     // 로그인 정보가 없을 경우 다시 로그인 페이지로 이동
     // 로그인 정보 가져오기(세션값)
     String id = (String)session.getAttribute("id"); // 다운캐스팅 - session.setAttribute(String name, Object value) 함수 원형에서
-    												// Object 객체에 String 객체를 업캐스팅해서 씀 => 그래서 다운캐스팅 가능
+                                    // Object 객체에 String 객체를 업캐스팅해서 씀 => 그래서 다운캐스팅 가능
     if (id == null)
     {
     	response.sendRedirect("loginForm.jsp"); // alert 창 띄우기는 불가능 - jsp 코드가 먼저 실행된 다음에 javascript 코드가 실행되기 때문에
-    											// 이 시점에 javascript는 로드되지도 않았음 - 그래서 javascript 코드는 못 쓴다.
+                                    // 이 시점에 javascript는 로드되지도 않았음 - 그래서 javascript 코드는 못 쓴다.
     }
   %>
   
@@ -994,7 +994,7 @@ public class MemberBean {
     final String PASS = "1234"; // 실제 코드 작성시엔 이렇게 계정정보 노출하면 안됨. 이런 코드는 지우는 것이 좋다.
     
 	MemberBean mb = null; // 전역변수로 쓸 수 있도록 처음엔 MemberBean 객체의 레퍼런스만 준비함
-						  // 미리 객체를 만들지 않고 필요할 때 생성하도록 한다. (메모리 낭비를 줄이기 위해)
+                    // 미리 객체를 만들지 않고 필요할 때 생성하도록 한다. (메모리 낭비를 줄이기 위해)
     
     // 1. 드라이버 로드
     Class.forName(DRIVER);
