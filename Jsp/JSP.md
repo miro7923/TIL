@@ -443,7 +443,7 @@ response.sendRedirect("http://www.naver.co.kr"); // 해당 페이지로 바로 �
 ```jsp
 Class.forName("com.mysql.cj.jdbc.Driver"); // static method라서 객체 생성 없이 바로 호출할 수 있음
 ```
-<br><br>
+
 * 이렇게 입력하면 드라이버를 로드할 수 있다. 
 * MySQL 홈페이지 가서 Documentation 페이지 - Connector/J 8.0 Developer Guide - 6. ConnectJ reference - 6.1 Driver/Datasource Class Name 가면 드라이버를 로드할 때 무슨 클래스명을 입력해야 하는지 찾을 수 있다. 
     * 그 외에도 레퍼런스가 필요하면 참고하자.
@@ -456,7 +456,7 @@ Class.forName("com.mysql.cj.jdbc.Driver"); // static method라서 객체 생성 
 ```jsp
 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "1234");
 ```
-<br><br>
+
 * 이런 식으로 `DB`의 주소와 아이디, 비밀번호를 입력한 뒤 연결 객체 정보를 `Connection`에 저장한다.
 * 이러면 `mysql`과 연결된 것이다. 이제 `jsp` 파일에서 `SQL`문을 작성해 데이터베이스를 관리할 수 있다.
 
@@ -471,7 +471,7 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     <input type="submit" value="전송하기">
   </form>
 ```
-<br><br>
+
 * 여기서 사용자가 정보를 입력하고 `submit`버튼을 클릭하면 `insertPro.jsp` 페이지로 전달된다.<br><br>
 
 ### 2. `insertPro.jsp`라는 이름으로 회원가입 정보를 받아서 `DB`에 사용자 정보를 추가하는 페이지를 만든다.
@@ -519,7 +519,7 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     System.out.println("insert 동작 완료!");
   %>
 ```
-<br><br>
+
 * 위 과정을 완료하면 터미널이나 워크벤치에서 직접 `SQL`문을 작성하지 않았는데도 `DB`에 데이터가 삽입된다!<br><br>
 
 ### ❗️ 페이지를 실행할 땐 `~Form.jsp` 페이지에서 한다. 
@@ -537,7 +537,6 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     <input type="submit" value="전송하기">
   </form>
 ```
-<br><br>
 
 ### 2. `updatePro.jsp`라는 이름으로 전송받은 정보를 `DB`에 삽입할 페이지를 만든다.
 ```jsp
@@ -595,7 +594,6 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     System.out.println("회원정보 수정 완료!");
   %>
 ```
-<br><br>
 
 
 ## JDBC 사용 예제 3) 사용자 정보를 삭제하는 상황
@@ -607,7 +605,6 @@ Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb"
     <input type="submit" value="전송하기">
   </form>
 ```
-<br><br>
 
 ### 2. `deletePro.jsp`라는 이름으로 `DB`에서 전달받은 정보를 삭제하는 작업을 하는 페이지를 만든다.
 ```jsp
@@ -759,7 +756,6 @@ public class MemberBean {
 
 }
 ```
-<br><br>
 
 ### 2. `insertForm.jsp`라는 이름으로 가입정보를 입력받는 페이지를 만든다.
 ```jsp
@@ -778,7 +774,6 @@ public class MemberBean {
     </form>
   </fieldset>
 ```
-<br><br>
 
 ### 3. `insertPro.jsp`라는 이름으로 전달받은 정보를 `DB`에 삽입하는 페이지를 만든다.
 ```jsp
@@ -859,7 +854,6 @@ public class MemberBean {
     location.herf = 'loginForm.jsp';
   </script>
 ```
-<br><br>
 
 ## 자바빈을 사용한 DB 관리 예제 2) 로그인하는 상황
 ### 1. 정보를 저장할 클래스는 아까 만들었으니까 생략
@@ -873,7 +867,6 @@ public class MemberBean {
     <input type="button" value="회원가입" onclick=" location.href='insertForm.jsp'; ">
   </form>
 ```
-<br><br>
 
 ### 3. `loginPro.jsp`라는 이름으로 전달받은 정보를 `DB`와 매칭하는 페이지를 만든다.
 ```jsp
@@ -953,7 +946,6 @@ public class MemberBean {
     }
   %>
 ```
-<br><br>
 
 ## 로그인 후 메인 페이지로 이동하는 예제
 * `main.jsp`라는 이름으로 페이지를 만든다.
@@ -981,7 +973,6 @@ public class MemberBean {
   
   <h3><a href="info.jsp"> 회원정보 보기 </a></h3>
 ```
-<br><br>
 
 ## 로그인 후 회원정보를 볼 수 있는 페이지로 이동하는 예제
 * `info.jsp`라는 이름으로 페이지를 만든다.
