@@ -197,16 +197,12 @@ p
 ************************************
 
 # 0208 CSS 수업
-<hr>
 
-<p style="text-align: center;">
-<img src="../img/0208css.png" width="400" height="450" />
-</p><br><br>
+<img src="../img/0208css.png" width="400" height="450"/><br><br>
 
 * `HTML` 페이지를 `CSS`로 이렇게 꾸미는 것을 했다. <br><br>
 
 # 소스코드 - CSS
-<hr>
 
 ```css
     <style type="text/css">
@@ -302,7 +298,6 @@ p
 <br><br>
 
 # 소스코드 - HTML
-<hr>
 
 ```html
 <body>
