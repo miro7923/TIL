@@ -2,6 +2,7 @@
 ## 목차<br>
 * [운영체제란?](#운영체제란)
 * [컴퓨터 시스템 구조](#컴퓨터-시스템-구조)
+* [프로세스](#프로세스)
 
 # 운영체제란?
 * Operating System, OS
@@ -305,3 +306,123 @@
 
 ![programCycle](../img/programCycle.png)
 *************************************
+
+# 프로세스
+* 프로세스란 실행 중인 프로그램을 말한다.
+
+## 프로세스의 문맥(context)
+* 현대 프로세스는 멀티태스킹 환경이기 때문에 이 작업 저 작업 왔다갔다 하면서 실행하려면 프로세스가 어디까지 실행했었는지를 알 수 있는 문맥 정보가 필요하다.<br><br>
+
+* `CPU` 수행 상태를 나타내는 하드웨어 문맥
+    * Program Counter
+    * 각종 register<br><br>
+    
+* 프로세스의 주소 공간
+    * code, data, stack<br><br>
+    
+* 프로세스 관련 커널 자료 구조
+    * PCB (Process Control Block) : 프로세스가 실행될 때마다 하나씩 만들어서 프로세스에 `CPU`, `메모리`를 얼마나 줘야 할 지, 어디까지 실행했는지 이상 행동을 하지는 않는지 관리하기 위한 자료구조
+    * Kernal stack : 프로세스마다 별도로 둔다.
+
+## 프로세스의 상태 (Process State)
+* `CPU`가 하나라고 가정했을 때 프로세스는 상태가 변경되며 수행된다.
+
+### Running
+* `CPU`를 잡고 `instruction`을 수행중인 상태
+* `Time interrupt`, `System call`이 생기게 되면 `CPU`를 다시 내어주게 된다.
+
+### Ready
+* `CPU`를 기다리는 상태(메모리 등 `CPU`를 얻기 위한 다른 조건을 모두 만족하고)
+* `CPU`를 얻기 위한 `Ready queue`에서 기다리고 있다.
+
+### Blocked (wait, sleep)
+* `CPU`를 주어도 당장 `instruction`을 수행할 수 없는 상태
+* `Process` 자신이 요청한 event(ex. I/O)가 즉시 만족되지 않아 이를 기다리는 상태
+    * 예) 디스크에서 파일을 읽어와야 하는 경우
+    
+### New
+* 프로세스가 생성중인 상태
+
+### Terminated
+* 수행(execution)이 끝난 상태인데 작업이 완전히 끝난 것은 아니고 정리할 것이 남아있는 상태이다.<br><br>
+
+
+## PCB (Process Control Block)
+* 운영체제가 각 프로세스를 관리하기 위해 프로세스당 유지하는 정보
+* 다음의 구성 요소를 가진다(구조체로 유지).
+1) `OS`가 관리상 사용하는 정보
+- Process state, Process ID
+- scheduling information, priority<br><br>
+
+2) `CPU` 수행 관련 하드웨어 값
+- Program counter, registers<br><br>
+
+3) 메모리 관련
+- Code, data, stack의 위치 정보<br><br>
+
+4) 파일 관련
+- Open file descriptors...<br><br>
+
+
+## 문맥 교환 (Context Switch)
+* `CPU`를 한 프로세스에서 다른 프로세스로 넘겨주는 과정
+* `CPU`가 다른 프로세스에게 넘어갈 때 운영체제는 다음을 수행한다.
+    * `CPU`를 내어주는 프로세스의 상태를 그 프로세스의 `PCB`에 저장
+    * `CPU`를 새롭게 얻는 프로세스의 상태를 `PCB`에서 읽어옴<br><br>
+    
+❗️ `System call`이나 `Interrupt` 발생시 반드시 `Context switch`가 일어나는 것은 아니다.<br>
+`System call`이나 `Interrupt` 발생 후 다른 프로세스에게 `CPU`를 넘겨줬을 때 `Context switch`가 일어나는 것이지 같은 프로세스에게 다시 `CPU`를 줬을 때엔 `Context switch`가 일어난 것이 아니다.<br><br>
+
+* `Context switch`가 일어나면 `cache memory`를 비워야 하는데 이거 자체가 상당한 오버헤드를 일으킨다.<br><br>
+
+## 프로세스를 스케줄링하기 위한 큐
+### Job queue
+* 현재 시스템 내에 있는 모든 프로세스의 집합
+
+### Ready queue
+* 현재 메모리 내에 있으면서 `CPU`를 잡아서 실행되기를 기다리는 프로세스의 집합
+
+### Device queues
+* `I/O device`의 처리를 기다리는 프로세스의 집합<br><br>
+
+🔸 프로세스들은 각 큐들을 오가며 수행된다.<br><br>
+
+## 스케줄러 (Scheduler)
+### Long-term scheduler (장기 스케줄러 or job scheduler)
+* 시작 프로세스 중 어떤 것들을 `ready queue`로 보낼지 결정
+* 프로세스에 `memory(및 각종 자원)`을 주는 문제 결정
+* `degree of Multiprogramming`(메모리에 올라가 있는 프로세스의 수) 제어
+* 하지만 `time sharing system`에는 보통 장기 스케줄러가 없다(무조건 `ready`)
+
+### Short-term scheduler (단기 스케줄러 or CPU scheduler)
+* 어떤 프로세스를 다음번에 `running` 시킬지 결정
+* 프로세스에 `CPU`를 주는 문제 결정
+* 충분히 빨라야 함 (millisecond 단위)
+
+### Medium-term scheduler (중기 스케줄러 or Swapper)
+* `time sharing system`에서는 중기 스케줄러를 사용한다.
+* 여유 공간 마련을 위해 일부 프로세스를 통째로 메모리에서 디스크로 쫓아낸다.
+* 프로세스에게서 `memory`를 뺏는 문제 결정
+* `degree of Multiprogramming` 제어
+
+## 중기 스케줄러를 사용하면서 바뀌는 프로세스의 상태
+### Running
+* `CPU`를 잡고 `instruction`을 수행중인 상태
+* `Time interrupt`, `System call`이 생기게 되면 `CPU`를 다시 내어주게 된다.
+
+### Ready
+* `CPU`를 기다리는 상태(메모리 등 `CPU`를 얻기 위한 다른 조건을 모두 만족하고)
+* `CPU`를 얻기 위한 `Ready queue`에서 기다리고 있다.
+
+### Blocked (wait, sleep)
+* `I/O`등의 `event`를 (스스로) 기다리는 상태
+    * 예) 디스크에서 파일을 읽어와야 하는 경우
+* 자신이 요청한 `event`가 만족되면 `Ready` 상태가 된다.
+
+### Suspended (stopped)
+* 외부적인 이유로 프로세스의 수행이 정지된 상태
+* 프로세스는 통째로 디스크에 `swap out` 된다.
+    * 예) 사용자가 프로그램을 일시 정지시킨 경우 (break key)
+    * 시스템이 여러 이유로 프로그램을 잠시 중단시킴(메모리에 너무 많은 프로세스가 올라와 있을 때)
+* 외부에서 `resume` 해 주어야 `Active` 상태가 된다.
+
