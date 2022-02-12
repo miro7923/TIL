@@ -3,6 +3,7 @@
 * [CSS란?](#CSS란)
 * [기본 문법](#기본-문법)
 * [CSS 꾸미기 속성들](#CSS-꾸미기-속성들)
+* [0208 CSS 수업](#0208-css-수업)
 
 # CSS란?
 * `Cascading Style Sheets`의 약자로 `HTML`로 만든 웹 문서 뼈대에 디자인을 적용하기 위한 것
@@ -193,3 +194,147 @@ p
 ```
 
 * 위와 같이 초기화하고 시작하는 것이 좋다.
+************************************
+
+# 0208 CSS 수업
+<hr>
+
+<p style="text-align: center;">
+<img src="../img/0208css.png" width="400" height="450" />
+</p><br><br>
+
+* `HTML` 페이지를 `CSS`로 이렇게 꾸미는 것을 했다. <br><br>
+
+# 소스코드 - CSS
+<hr>
+
+```css
+    <style type="text/css">
+        * {
+/*             기본적인 여백 없앰 - 0px */
+            margin: 0px; padding: 0px;
+        }
+        
+        body {
+            background-color: #ccc;
+            padding: 20px;
+        }
+        
+        form {
+/*            배경색 흰색, 테두리 1실선, #222, 테두리 둥글게 5px, 
+            안여백 20px, 너비 400px 밖여백 위아래 30px 왼쪽오른쪽 가운데정렬 */
+            background-color: white;
+            border: 1px solid #222;
+            border-radius: 5px;
+            padding: 20px;
+            width: 400px;
+            margin: 30px auto;
+        }
+        
+        fieldset {
+/*            테두리 1px 실선 #ccc, 밖 아래여백 30px */
+            border: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+        
+        legend {
+/*            폰트크기 16px, 폰트굵게 bold, 안 왼쪽여백 5px, 안 아래여백 10px */
+            font-size: 16px;
+            font-weight: bold;
+            padding-left: 5px;
+            padding-bottom: 10px;
+        }
+        
+        li {
+/*            줄간격 30px, 리스트 스타일 none, 안여백 5px 10px, 밖아래여백 2px */
+            line-height: 30px;
+            list-style: none;
+            padding: 5px 10px;
+            margin-bottom: 2px;
+        }
+        
+        label {
+/*            왼쪽으로 배치, 폰트크기 13px, 너비 110px */
+            float: left;
+            font-size: 13px;
+            width: 110px;
+        }
+        
+        .btn {
+/*            테두리 1px 실선 #222, 테두리 둥글게 20px, 글자크기 16px, 
+            글자간격 1px, 밖여백 자동 가운데정렬, 안여백 7px 25px */
+            display: block;
+            border: 1px solid #222;
+            border-radius: 20px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin: 0px auto;
+            padding: 7px 25px;
+        }
+        
+/*        input type="submit" 제외하는 법 */
+        input:not([type=submit]) {
+/*            테두리선 1px 실선 #ccc, 테두리선 둥글게 3px, 글자크기 13px, 안여백 5px,
+             너비 200px */
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 13px;
+            padding: 5px;
+            width: 200px;
+        }
+        
+/*        여러 필드셋 중 마지막 필드셋만 스타일 지정 */
+        fieldset:last-of-type {
+            border: none;
+            margin-bottom: 0px;
+        }
+        
+/*        태그 중 조건을 걸어줄 땐 대괄호 [] */
+        input[required] {
+            border: 1px solid red;
+        }
+        
+        input[readonly] {
+            border: none;
+        }
+    </style>
+```
+<br><br>
+
+# 소스코드 - HTML
+<hr>
+
+```html
+<body>
+<form action="a.jsp" method="get">
+	<fieldset>
+		<legend>로그인 정보</legend>
+		<ul>
+			<li><label>아이디</label>
+			    <input type="text" name="id" autofocus required></li>
+			<li><label>비밀번호</label>
+			    <input type="password" name="pwd1"  required></li>
+			<li><label>비밀번호 확인</label>
+			    <input type="password" name="pwd2"  required></li>
+			<li><label>회원 등급</label>
+			    <input type="text" name="level" value="준회원" readonly></li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<legend>개인정보</legend>
+		<ul>
+			<li><label>이름</label>
+			    <input type="text" name="name" placeholder="5자미만 공백없이" required></li>
+			<li><label>메일 주소</label>
+			    <input type="email" name="email" placeholder="abcd@domain.com" required></li>
+			<li><label>연락처</label>
+			    <input type="tel" name="tel"></li>
+		</ul>
+	</fieldset>
+	<fieldset class="btnFieldset">
+		<input type="submit" value="제출" class="btn">
+	</fieldset>
+</form>
+</body>
+```
+
