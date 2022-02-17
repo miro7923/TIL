@@ -812,7 +812,7 @@
 ## 제어 장치의 구성
 * 제어 장치(control unit)는 주기억 장치에 연결되어 있는 명령어를 순서대로 호출하고 해독하여 그 결과에 따라 연산 장치, 기억 장치, 입,출력 장치에 제어 신호를 보내 원하고자 하는 동작을 유도한다.<br><br>
 
-![controlUnit](https://miro7923.github.io/assets/images/controlUnit.jpg)
+<img src="https://miro7923.github.io/assets/images/controlUnit.jpg" width="500" height="550">
 
 ### 1. 프로그램 계수기(PC : Program Counter)
 * 명령의 실행 순서를 정하기 위하여 다음에 실행될 명령이 들어 있는 번지를 기억해 두는 레지스터
