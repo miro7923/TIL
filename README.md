@@ -3,6 +3,7 @@
 ## 컴퓨터 사이언스<br>
 * [컴퓨터 사이언스 정리](ComputerScience/ComputerScience_Summary.md)
 * [운영체제](ComputerScience/OS_Summary.md)
+* [컴퓨터구조](ComputerScience/ComputerArchitecture.md)
 
 ## Database
 * [DB 이론 정리](Database/DB_Summary.md)
