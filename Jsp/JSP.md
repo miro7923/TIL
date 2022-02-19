@@ -13,6 +13,7 @@
 * [JDBC(Java Database Connectivity)](#jdbcjava-database-connectivity)
 * [회원관리 서비스 요구사항](#회원관리-서비스-요구사항)
 * [자바빈(JavaBean)](#자바빈javabean)
+* [DAO](#dao)
 
 # JSP(Java Server Page)란?
 * `Java`를 이용하여 `동적인 웹 페이지`를 만들기 위해 Sun Microsystems사가 개발한 기술
@@ -1062,3 +1063,226 @@ public class MemberBean {
   </script>
 ```
 ***************************************
+
+# DAO
+* 데이터 처리 객체 (Data Access Object)
+* `DB`에 관련된 모든 동작을 수행하는 클래스
+* 지금까지 `JDBC`로 `DB`와 연결할 때 사용하려는 페이지마다 일일이 연결 코드를 적어줘야 했는데 이제는 `DAO`를 만들어서 연결 동작을 여기서 수행하도록 하고 `DB`연결이 필요한 페이지에서는 `DAO`만 호출하면 된다!
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class MemberDAO { 
+	
+	// DAO (Data Access Object) : 데이터 처리 객체
+	// => DB에 관련된 모든 동작을 수행하는 클래스
+	
+	// 연결에 필요한 정보 저장
+	private Connection con = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	private String sql = "";
+	
+	// 디비연결 동작
+	private Connection getConnect()
+	{
+	    final String DRIVER = "com.mysql.cj.jdbc.Driver";
+	    final String URL = "jdbc:mysql://localhost:3306/jspdb";
+	    final String ID = "root";
+	    final String PASS = "1234";
+	    
+	    try // 예외가 발생할지도 모르는 코드 작성 
+	    { 
+			// 1. 드라이버 로드
+			Class.forName(DRIVER);
+
+			// 2. 디비연결
+			con = DriverManager.getConnection(URL, ID, PASS);
+			
+			System.out.println("DAO : 디비연결 성공!" + con);
+		} 
+	    catch (ClassNotFoundException e) 
+	    {
+			e.printStackTrace();
+		} 
+	    catch (SQLException e) 
+	    {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 연결 정보가 계속 유지되어야 하기 때문에 finally 구문은 안쓴다.
+	    
+		
+		return con;
+	} // 디비연결
+	
+	// 자원해제
+	public void CloseDB()
+	{
+		try {
+			
+			// 리소스 해제는 생성의 역순으로 한다.
+			if (null != rs) rs.close(); // 연결해제
+			if (null != pstmt) pstmt.close();
+			if (null != con) con.close(); 
+			System.out.println("DAO : 자원해제 완료");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	} // 자원해제
+	
+	// 회원가입 - insertMember()
+	public void insertMember(MemberBean mb)
+	{
+		System.out.println("DAO : insertMember() 호출");
+		try {
+			// 1. 드라이버 로드
+			// 2. 디비연결
+			con = getConnect();
+			
+			// 3. sql 작성 & pstmt 객체 생성
+			sql = "insert into itwill_member(id, pass, name, age, gender, email, regdate) "
+					+ "values(?, ?, ?, ?, ?, ?, ?)";
+			pstmt = con.prepareStatement(sql);
+			
+			// ???
+			pstmt.setString(1, mb.getId());
+			pstmt.setString(2, mb.getPass());
+			pstmt.setString(3, mb.getName());
+			pstmt.setInt(4, mb.getAge());
+			pstmt.setString(5, mb.getGender());
+			pstmt.setString(6, mb.getEmail());
+			pstmt.setTimestamp(7, mb.getRegdate());
+			
+			// 4. sql 실행
+			int result = pstmt.executeUpdate();
+			System.out.println("DAO : 회원가입 성공!" + result);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			
+			CloseDB();
+		}
+	} // 회원가입 - insertMember()
+	
+	// 로그인 - loginCheck(mb)
+	public int loginCheck(MemberBean mb)
+	{
+		System.out.println("DAO : 로그인 - loginCheck(mb)");
+		
+		int result = -1;
+		try {
+			// 1, 2. 디비연결
+			con = getConnect();
+			
+			// 3. sql 작성(select) & pstmt 객체 생성
+			sql = "select pass from itwill_member where id=?";
+			pstmt = con.prepareStatement(sql);
+			
+			// ??
+			pstmt.setString(1, mb.getId());
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터처리
+			if (rs.next())
+			{
+				// 회원
+				if (mb.getPass().equals(rs.getString("pass")))
+				{
+					// 본인
+					result = 1;
+				}
+				else 
+				{
+					// 비밀번호 오류
+					result = 0;
+				}
+			}
+			else 
+			{
+				// 비회원
+				result = -1;
+			}
+			
+			System.out.println("DAO : 로그인체크 완료 (" + result + ")");
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			
+			CloseDB();
+		}
+
+		System.out.println("DAO : 로그인 - loginCheck(mb)");
+		return result;
+	} // 로그인 - loginCheck(mb)
+
+} // MemberDAO
+```
+
+* 이렇게 `DAO` 클래스를 만든 다음에<br><br>
+
+```jsp
+<body>
+  <%
+    // 한글처리
+    request.setCharacterEncoding("UTF-8");
+    
+    // 전달되는 정보 저장 - 액션태그
+  %>
+    <jsp:useBean id="mb" class="com.itwillbs.member.MemberBean"></jsp:useBean>
+    <jsp:setProperty property="*" name="mb"/>
+  <%
+    // DB정보를 사용해서 로그인 체크
+    // DAO 객체 생성
+    MemberDAO dao = new MemberDAO();
+    int result = dao.loginCheck(mb);
+    System.out.println("pro : 로그인체크 완료 (" + result + ")");
+    
+    if (1 == result)
+    {
+    	session.setAttribute("id", mb.getId());
+    	%>
+    	  <script type="text/javascript">
+    	    alert("로그인 성공!")
+    	    location.href='main.jsp';
+    	  </script>
+    	<%
+    }
+    else if (0 == result)
+    {
+    	%>
+    	  <script type="text/javascript">
+    	    alert("비밀번호 오류!");
+    	    history.back();
+    	  </script>
+    	<%
+    }
+    else
+    {
+    	%>
+    	  <script type="text/javascript">
+    	    alert("비회원 입니다!");
+    	    history.back();
+    	  </script>
+    	<%
+    }
+    
+    // 체크 결과에 따른 페이지 이동
+  %>
+</body>
+```
+
+* `JSP` 페이지에서는 아까 만든 객체를 호출하기만 하면 된다!
+
