@@ -15,6 +15,13 @@
 * [Performance](#performance)
 * [CPU Time](#cpu-time)
 * [Instruction Count & CPI](#instruction-count--cpi)
+* [성능에 영향을 미치는 요소](#성능에-영향을-미치는-요소)
+* [Clock period](#clock-period)
+* [Power wall](#power-wall)
+* [Multiprocessors](#multiprocessors)
+* [CPU 성능 측정](#cpu-성능-측정)
+* [Amdahl's Law](#amdahls-law)
+* [대기 중 전력소모](#대기-중-전력소모)
 * [출처](#출처)
 
 # 컴퓨터의 발전
