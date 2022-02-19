@@ -6,6 +6,8 @@
 * [단일 행 함수](#단일-행-함수)<br>
 * [쿼리구문에 큰 따옴표 사용 문법](#쿼리구문에-큰-따옴표-사용-문법)<br>
 * [GROUP BY절과 HAVING절](#group-by절과-having절)
+* [JOIN](#join)
+* [Subquery](#subquery)
 
 # DB 구동 및 접속<br>
 
@@ -633,3 +635,65 @@ WHERE  e.manager_id = 149;
 * 컬럼명을 입력할 때 해당 컬럼이 속해있는 테이블명을 입력하면 해당 범위에서만 검색을 시행하기 때문에 실행속도가 훨씬 빨라진다. (테이블명을 적지 않아도 실행되지만 그만큼 모든 테이블을 대상으로 검색해서 결과를 가져오기 때문에 실행속도가 훨씬 느리다.)
 * 그래서 실행속도가 빠른 쿼리문을 작성하는 것이 중요하다.
 * 그런데 테이블 풀네임을 일일이 적어주면 너무 길어서 가독성이 떨어지니까 약자로 적을 수 있는데 대신 약자로 적었다면 `FROM`절에서 어떤 테이블명의 약자인지 꼭 명시해줘야 `SQL`이 헷갈리지 않고 잘 찾아올 수 있다.
+**************************************
+
+# Subquery
+## ☑️ 문법
+* `GROUP BY`절을 제외하고 다 사용가능하며 `WHERE`, `HAVING`절에서 제일 많이 활용된다.
+
+```sql
+SELECT select_list
+FROM   table
+WHERE  expr operator (SELECT select_list
+                      FROM   table);
+```
+
+* 테이블에서 어떤 정보를 조회할 때 특정 범위 안에 있는 정보만 조회하고 싶은데 그 특정 범위도 알 수가 없어서 쿼리문으로 물어봐야 할 때 사용한다.<br>
+
+### 예제
+
+```sql
+SELECT last_name, salary
+FROM   employees
+WHERE  salary > (SELECT salary
+                 FROM   employees
+                 WHERE  last_name = 'Abel');
+```
+
+* `Able`이라는 사람보다 높은 연봉을 가진 사람들을 조회하고 싶을 때<br><br>
+
+```sql
+SELECT last_name, job_id, salary
+FROM   employees
+WHERE  salary = (SELECT MIN(salary)
+                 FROM   employees);
+```
+
+* 연봉이 가장 적은 사람의 이름, 부서, 연봉정보를 출력하고 싶을 때<br><br>
+
+```sql
+SELECT   department_id, MIN(salary)
+FROM     employees
+GROUP BY department_id
+HAVING   MIN(salary) > (SELECT MIN(salary)
+                        FROM   employees
+                        WHERE  department_id = 50);
+```
+
+* 부서번호 50번의 가장 적은 연봉보다는 큰 부서별 가장 적은 연봉을 보고 싶을 때<br><br>
+
+### Inline View
+* `From`절에 `Subquery`가 작성된 경우
+
+```sql
+SELECT a.last_name, a.salary, a.department_id, b.salavg
+FROM   employees a JOIN (SELECT   department_id, AVG(salary) salavg
+                         FROM     employees
+                         GROUP BY department_id) b -- 이 쿼리구문 안에서만 유효한 inline view
+ON     a.department_id = b.department_id
+WHERE  a.salary > b.salavg;
+```
+
+* `employees` 테이블에서 자기가 소속된 부서의 평균 급여보다 본인의 급여가 더 큰 사원만 출력할 때
+* `Inline view`는 실제로 존재하는 테이블은 아닌 이 쿼리문을 위한 가상 테이블로, 실제 존재하는 테이블은 아니기 때문에 마지막에 한 칸 띄우고 앨리어스를 꼭 작성해야 한다.
+
