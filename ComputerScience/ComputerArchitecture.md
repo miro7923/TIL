@@ -23,7 +23,7 @@
 * [Amdahl's Law](#amdahls-law)
 * [대기 중 전력소모](#대기-중-전력소모)
 * [Instruction Set](#instruction-set)
-# [Design Principle](#design-principle)
+* [Design Principle](#design-principle)
 * [Operations of the Computer Hardware](#operations-of-the-computer-hardware)
 * [Logical Operations](#logical-operations)
 * [명령 실행 단계](#명령-실행-단계)
