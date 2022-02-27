@@ -14,7 +14,7 @@
 * [회원관리 서비스 요구사항](#회원관리-서비스-요구사항)
 * [자바빈(JavaBean)](#자바빈javabean)
 * [DAO](#dao)
-* [커넥션 풀(Connection Pool](#커넥션-풀connection-poll)
+* [커넥션 풀(Connection Pool)](#커넥션-풀connection-pool)
 
 # JSP(Java Server Page)란?
 * `Java`를 이용하여 `동적인 웹 페이지`를 만들기 위해 Sun Microsystems사가 개발한 기술
