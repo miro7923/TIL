@@ -8,7 +8,7 @@
 * [Process Management](#process-management)
 * [CPU Scheduling](#cpu-scheduling)
 * [Process Synchronization](#process-synchronization)
-* [Deadlock](#deadlock)
+* [Deadlocks](#deadlocks)
 * [출처](#출처)
 
 # 운영체제란?
@@ -1066,7 +1066,7 @@ P(mutex)
 * 모니터 내의 함수는 한 번에 하나만 실행할 수 있기 때문에 `lock`을 걸 필요가 없다. 그래서 프로그래머 입장에서는 좀 더 간편하게 프로그램을 짤 수 있다.
 *************************************
 
-# Deadlock
+# Deadlocks
 * 일련의 프로세스들이 서로가 가진 자원을 기다리며 `block`된 상태
 
 ## Resource(자원)
